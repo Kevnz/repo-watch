@@ -24,6 +24,7 @@
 	 		body{padding:50px; height:100%;}
 	 		label {padding: 5px;}
 	 		input{font-size:110%;padding:4px;}
+	 		.repo-link{color:#8E8E8E;}
  		</style>
 	</head>
 	<body class="yui3-skin-night">
@@ -47,15 +48,19 @@
 	</script>
 	<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
  	<script type="text/javascript">
- 		YUI({skin: 'night'}).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', function(Y){
+ 		YUI({skin: 'night'}).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute', function(Y){
+ 			var formatter = function link(o) {
+ 				console.log(o);
+ 				o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))
+				 
+			}
  			var	ioCompleted = function(id, res, args){ 
 				var results = Y.JSON.parse(res.responseText);
-				console.log(results);
 				console.log(results[0].name);
 				Y.one('#results').set('innerHTML', '');
 				var table = new Y.DataTable({
 				    columns: [
-						{key: "name", label: "Project Name", sortable:true}, 
+						{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
 						{key: "description", label: "Description", sortable:true}, 
 						{key: "language", label: "Language of Project", sortable:true},
 						{key: "owner", label: "Project Owner", sortable: true}
@@ -73,10 +78,10 @@
  			Y.on('domready', function(){
  				var button = Y.one('#loadRepos')
  				button.plug(Y.Plugin.Button);
-				button.on('click', function(e){
+				button.on('click', function(e){ 
 					e.preventDefault();
 					var url;
-					if(Y.one('#name').get('value').length > 0){
+					if(Y.one('#name').get('value')){
 						url = '/repos/' + Y.one('#name').get('value');
 						Y.io(url);
 					}
