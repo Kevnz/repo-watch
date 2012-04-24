@@ -1,0 +1,89 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>Register</title>
+		<meta name="description" content="">
+
+		<!-- Mobile viewport optimized: h5bp.com/viewport -->
+		<meta name="viewport" content="width=device-width">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssreset/cssreset-min.css">
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssbase/cssbase-min.css">
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.5.0/build/cssfonts/cssfonts-min.css">
+ 
+
+ 		<style type="text/css">
+ 			body{padding:50px;margin: 50px;}
+ 			label {padding: 5px;}
+ 			input{display: inline-block;}
+ 		</style>
+	</head>
+	<body class="yui3-skin-sam">
+		<form>
+	 		<div class="form-row">
+	 			<label for="name">User name</label>
+	 			<input type="text" id="name" />
+	 		</div>
+
+	 		<div class="form-row">
+	 			<button id="loadRepos"> Get Repos </button>
+	 		</div>
+		</form>	
+		<div id="results"></div>
+	<script>
+  /*
+    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+  */
+	</script>
+	<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
+ 	<script type="text/javascript">
+ 		YUI().use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', function(Y){
+ 			var	ioCompleted = function(id, res, args){ 
+				var results = Y.JSON.parse(res.responseText);
+				console.log(results);
+				console.log(results[0].name);
+				Y.one('#results').set('innerHTML', '');
+				var table = new Y.DataTable({
+				    columns: [
+						{key: "name", label: "Project Name", sortable:true}, 
+						{key: "description", label: "Description", sortable:true}, 
+						{key: "language", label: "Language of Project", sortable:true},
+						{key: "owner", label: "Project Owner", sortable: true}
+				    ],
+				    data: results,
+				    caption: "Watched Repositories!",
+				    summary: "Github Repositories that are being watched"
+				});
+
+				table.render("#results");
+			};
+
+
+			Y.on('io:complete', ioCompleted);
+ 			Y.on('domready', function(){
+ 				var button = Y.one('#loadRepos')
+ 				button.plug(Y.Plugin.Button);
+				button.on('click', function(e){
+					e.preventDefault();
+					var url;
+					if(Y.one('#name').get('value').length > 0){
+						url = '/repos/' + Y.one('#name').get('value');
+						Y.io(url);
+					}
+				});
+				//
+			});
+ 		});
+ 	</script>
+</body>
+</html>
