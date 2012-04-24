@@ -8,12 +8,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
 		<title>Who watches the watchers</title>
-		<meta name="description" content="">
-
-		<!-- Mobile viewport optimized: h5bp.com/viewport -->
+		<meta name="description" content=""> 
 		<meta name="viewport" content="width=device-width">
-
-		<!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+ 
  
  
 
@@ -38,25 +35,15 @@
 	 		</div>
 		</form>	
 		<div id="results"></div>
-	<script>
-  /*
-    var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
-  */
-	</script>
+ 
 	<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
  	<script type="text/javascript">
  		YUI({skin: 'night'}).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute', function(Y){
- 			var formatter = function link(o) {
- 				console.log(o);
- 				o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))
-				 
+ 			var formatter = function link(o) { 
+ 				o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
 			}
  			var	ioCompleted = function(id, res, args){ 
-				var results = Y.JSON.parse(res.responseText);
-				console.log(results[0].name);
+				var results = Y.JSON.parse(res.responseText); 
 				Y.one('#results').set('innerHTML', '');
 				var table = new Y.DataTable({
 				    columns: [
@@ -76,7 +63,7 @@
 
 			Y.on('io:complete', ioCompleted);
  			Y.on('domready', function(){
- 				var button = Y.one('#loadRepos')
+ 				var button = Y.one('#loadRepos');
  				button.plug(Y.Plugin.Button);
 				button.on('click', function(e){ 
 					e.preventDefault();
@@ -85,8 +72,7 @@
 						url = '/repos/' + Y.one('#name').get('value');
 						Y.io(url);
 					}
-				});
-				//
+				}); 
 			});
  		});
  	</script>
