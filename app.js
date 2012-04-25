@@ -2,7 +2,7 @@ var GitHubApi = require("github");
 var fs = require('fs'),
 	path = require('path'),
 	str = process.cwd(),
-	reaper = require(path.join(str, '/lib/reaper'));
+	reaper = require('./lib/reaper'));
  
 
 var http = require('http'),
