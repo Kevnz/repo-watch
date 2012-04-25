@@ -2,7 +2,7 @@
     "name": "watched"
   , "version": "0.0.1"
   , "node": "0.6.12"
-  , "private": true,
+  , "private": true
   , "dependencies": {
       "github": ">=0.0.1"
     , "director": ">= 0.0.1"
