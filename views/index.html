@@ -40,27 +40,25 @@
  	<script type="text/javascript">
  		YUI({skin: 'night'}).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute', function(Y){
  			var formatter = function link(o) { 
- 				o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
-			}
- 			var	ioCompleted = function(id, res, args){ 
-				var results = Y.JSON.parse(res.responseText); 
-				Y.one('#results').set('innerHTML', '');
-				var table = new Y.DataTable({
-				    columns: [
-						{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
-						{key: "description", label: "Description", sortable:true}, 
-						{key: "language", label: "Language of Project", sortable:true},
-						{key: "owner", label: "Project Owner", sortable: true}
-				    ],
-				    data: results,
-				    caption: "Watched Repositories!",
-				    summary: "Github Repositories that are being watched"
-				});
-
-				table.render("#results");
-			};
-
-
+ 					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
+				},
+ 				ioCompleted = function(id, res, args){ 
+ 					Y.one('#results').set('innerHTML', '');
+					var results = Y.JSON.parse(res.responseText);
+ 
+					var table = new Y.DataTable({
+						columns: [
+							{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
+							{key: "description", label: "Description", sortable:true}, 
+							{key: "language", label: "Language of Project", sortable:true},
+							{key: "owner", label: "Project Owner", sortable: true}
+						], 
+						data: results,
+						caption: "Watched Repositories!",
+						summary: "Github Repositories that are being watched"
+					}); 
+					table.render("#results"); 
+				};
 			Y.on('io:complete', ioCompleted);
  			Y.on('domready', function(){
  				var button = Y.one('#loadRepos');
@@ -70,7 +68,7 @@
 					var url;
 					if(Y.one('#name').get('value')){
 						url = '/repos/' + Y.one('#name').get('value');
-						Y.io(url);
+						Y.io(url); 
 					}
 				}); 
 			});

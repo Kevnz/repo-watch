@@ -30,8 +30,11 @@ var http = require('http'),
 		var response = this.res,
 			request = this.req;
  
- 		var reap = new reaper(request, response,  username);
- 		reap.begin();
+ 		var reap = new reaper();
+ 		reap.getWatchedRepositories(username, function(err, result){
+    		response.write(JSON.stringify(results));
+    		response.end();
+ 		});
   
 	};
 
@@ -42,14 +45,14 @@ var router = new director.http.Router({
 	}
 });
  
-  var server = http.createServer(function (req, res) {
-    router.dispatch(req, res, function (err) {
-      if (err) {
-        res.writeHead(404);
-        res.end();
-      }
-    });
-  });
+var server = http.createServer(function (req, res) {
+	router.dispatch(req, res, function (err) {
+    	if (err) {
+			res.writeHead(404);
+			res.end();
+		}
+	});
+ });
 
  
   server.listen(8080);
