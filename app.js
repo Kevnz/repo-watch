@@ -11,7 +11,7 @@ var http = require('http'),
 		var _this = this;
 		console.log(arguments);
 		//this.res.writeHead(200, { 'Content-Type': 'text/plain' });
-		fs.readFile(path.join(process.cwd(),'/views/index.html'), "binary", function(err, file) {
+		fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
     		if(err) {
     			_this.res.writeHead(500, {"Content-Type": "text/plain"});
     			_this.res.write(err + "\n");
