@@ -22,6 +22,7 @@
 	 		label {padding: 5px;}
 	 		input{font-size:110%;padding:4px;}
 	 		.repo-link{color:#8E8E8E;}
+	 		#filter{margin-top:5px;}
  		</style>
 	</head>
 	<body class="yui3-skin-night">
@@ -34,32 +35,79 @@
 	 			
 	 		</div>
 		</form>	
+		<div id="filter">
+			
+		</div>
 		<div id="results"></div>
  
 	<script src="http://yui.yahooapis.com/3.5.0/build/yui/yui-min.js"></script>
  	<script type="text/javascript">
- 		YUI({skin: 'night'}).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute', function(Y){
+ 		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50' }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','handlebars','gallery-funcprog', 'button-group', function(Y){
+
  			var formatter = function link(o) { 
  					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
 				},
- 				ioCompleted = function(id, res, args){ 
+				ownerFormatter = function (o){
+					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.owner_url, name:o.data.owner}))	
+				},
+				table,
+				results,
+ 				loadTable = function(id, res, args){ 
  					Y.one('#results').set('innerHTML', '');
-					var results = Y.JSON.parse(res.responseText);
+					results = Y.JSON.parse(res.responseText);
  
-					var table = new Y.DataTable({
+					table = new Y.DataTable({
 						columns: [
 							{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
 							{key: "description", label: "Description", sortable:true}, 
 							{key: "language", label: "Language of Project", sortable:true},
-							{key: "owner", label: "Project Owner", sortable: true}
+							{key: "owner", label: "Project Owner", sortable: true,  nodeFormatter:ownerFormatter}
 						], 
 						data: results,
 						caption: "Watched Repositories!",
 						summary: "Github Repositories that are being watched"
 					}); 
 					table.render("#results"); 
-				};
-			Y.on('io:complete', ioCompleted);
+				},
+				loadLanguageFilter = function(id, res, args){
+					Y.one('#filter').setContent('');
+					var repos = Y.JSON.parse(res.responseText),
+						source = '{{#langs}}<button class="checkbox" data-value="{{language}}">{{language}}</button>{{/langs}}',
+						template = Y.Handlebars.compile(source);
+						allLangs =  Y.map(repos, function(repo) { return repo.language; }),
+						reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
+							if(lang && langs.indexOf(lang) === -1) {
+								langs.push(lang); 
+							}
+							return langs;
+						}),
+						structuredLangs = Y.map(reducedLangs, function(lang){return {language: lang}});
+						console.log( structuredLangs );
+						var html = template({langs: structuredLangs});
+						Y.one('#filter').append(html);
+						var languageFillterGroup = new Y.ButtonGroup({
+        					srcNode: '#filter',
+      						type: 'checkbox',
+							on: {
+									'selectionChange': function(e){
+									var selection = languageFillterGroup.getSelectedButtons(),
+										_filtered = Y.reduce(results, [], function(filteredRepos, repo){
+										for (var i = 0; i < selection.length; i++) {
+											if(repo.language === selection[i].getData('value')){
+												filteredRepos.push(repo);
+											}
+										};
+										return filteredRepos;
+									});
+									table.set('data', _filtered.length === 0 ? results : _filtered);
+									table.syncUI();
+					            }
+					        }
+					    }).render();
+					
+ 				};
+			Y.on('io:complete', loadTable);
+			Y.on('io:complete', loadLanguageFilter )
  			Y.on('domready', function(){
  				var button = Y.one('#loadRepos');
  				button.plug(Y.Plugin.Button);
