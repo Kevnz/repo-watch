@@ -127,6 +127,7 @@
 
  				},
  				hideThrobber = function(){
+ 					if(textHandler) textHandler.cancel();
  					var throbber = Y.all('.throbber')
  					if (throbber) throbber.remove();
  				}
