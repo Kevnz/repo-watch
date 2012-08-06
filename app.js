@@ -26,12 +26,13 @@ var http = require('http'),
 	},
  
 	repos = function(username){
-		console.log('Repo ');
+		console.log('Repo ' + username);
 		var response = this.res,
 			request = this.req;
  
  		var reap = new reaper();
  		reap.getWatchedRepositories(username, function(err, results){
+            console.log(results)
     		response.write(JSON.stringify(results));
     		response.end();
  		});

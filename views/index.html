@@ -20,7 +20,15 @@
 	 		input{font-size:110%;padding:4px;}
 	 		.repo-link{color:#8E8E8E;}
 	 		#filter{margin-top:5px;}
-	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:30px;left:30px;}
+	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:94px;left:64px;
+	 			background-color: rgb(126,126,126); opacity: 0.5;
+	 			color:white;
+	 			padding:20px;
+	 			font-size: 120%;
+	 			font-weight: bold;
+	 			font-family: HelveticaNeue,arial,helvetica,clean,sans-serif;
+
+	 		}
  		</style>
 	</head>
 	<body class="yui3-skin-night">
@@ -40,7 +48,7 @@
  
 	<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
  	<script type="text/javascript">
- 		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50', combine:false }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','gallery-funcprog', 'button-group', function(Y){
+ 		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50', combine:true }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','gallery-funcprog', 'button-group','handlebars','io-queue', function(Y){
 
  			var formatter = function link(o) { 
  					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
@@ -50,10 +58,15 @@
 				},
 				table,
 				results,
+				textHandler,
  				loadTable = function(id, res, args){ 
  					Y.one('#results').set('innerHTML', '');
-					results = Y.JSON.parse(res.responseText);
- 
+ 					Y.log(res.responseText.length);
+ 					if (res.responseText.length < 2){
+ 						results = { }
+ 					}else{
+						results = Y.JSON.parse(res.responseText);
+ 					}
 					table = new Y.DataTable({
 						columns: [
 							{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
@@ -105,15 +118,16 @@
 					
  				},
  				showThrobber = function(){
- 					var indicator = Y.Node.create('div');
- 					indicator.set('id', 'throbber');
- 					indicator.setContent('Loading');
- 					indicator.addClass('throbber');
+ 					var indicator = Y.Node.create('<div class="throbber">Loading</div>');
  					Y.one('body').appendChild(indicator);
+ 					textHandler = Y.later(200, indicator,function(){
+ 						var text = this.getContent() + '.';
+ 						this.setContent(text);
+ 					}, null, true);
+
  				},
  				hideThrobber = function(){
- 					return;
- 					var throbber = Y.one('#throbber')
+ 					var throbber = Y.all('.throbber')
  					if (throbber) throbber.remove();
  				}
  			Y.on('io:start', showThrobber);
@@ -124,10 +138,15 @@
  				var button = Y.one('#loadRepos');
  				button.plug(Y.Plugin.Button);
 				button.on('click', function(e){ 
+
+					Y.log('clickity click');
+
 					e.preventDefault();
+					 
 					var url;
 					if(Y.one('#name').get('value')){
-						url = '/repos/' + Y.one('#name').get('value');
+						url = 'http://' + window.location.host +'/repos/' + Y.one('#name').get('value');
+						Y.log(url);
 						Y.io(url); 
 					}
 				}); 
