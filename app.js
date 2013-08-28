@@ -8,7 +8,6 @@ var fs = require('fs'),
 var http = require('http'),
     director = require('director');
     base = function (route) {
-        consolse.log('base route');
         var _this = this;
         fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
             if(err) {
@@ -55,22 +54,7 @@ var http = require('http'),
   
     },
     staticContent = function (folder, file) {
-        console.log("staticContent");
-        console.log(folder);
-        console.log(file);
-        var _this = this;
-        fs.readFile(path.join(__dirname, folder, file), "binary", function(err, file) {
-            if(err) {
-                _this.res.writeHead(500, {"Content-Type": "text/plain"});
-                _this.res.write(err + "\n");
-                _this.res.end();
-                return;
-            }
-            
-            _this.res.writeHead(200);
-            _this.res.write(file, "binary");
-            _this.res.end();
-        });
+        console.log('static content');
     };
 
 var router = new director.http.Router({
@@ -96,4 +80,4 @@ var server = http.createServer(function (req, res) {
  });
 
  
-  server.listen(process.env.PORT || 4567);
+  server.listen(process.env.PORT || 17231);
