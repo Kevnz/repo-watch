@@ -41,14 +41,16 @@ var http = require('http'),
             request = this.req;
  
         var reap = new reaper();
-        reap.getWatchedRepositories(username, function(err, results){
+        reap.getWatchedRepositories(username, function(err, results) {
                 reap.getWatchedRepositories(other_username, function(err, second_results){
                 
-
-                response.write(JSON.stringify(results));
+                var full_results = [];
+                full_results.push({user: username, repos: results});
+                full_results.push({user: other_username, repos: second_results});
+                response.write(JSON.stringify(full_results));
                 response.end();
             });
-            response.write(JSON.stringify(results));
+            //response.write(JSON.stringify(results));
  
         });
   
