@@ -10,13 +10,14 @@
 		<title>Who watches the watchers</title>
 		<meta name="description" content=""> 
 		<meta name="viewport" content="width=device-width">
- 		<link rel="stylesheet" href="/static/css/skin">
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
+ 		
  
  
 
  		<style type="text/css">
 			.yui3-skin-night {
-				background-color: #000;
+				
 		    }
 	 		body{padding:50px; height:100%;}
 	 		label {padding: 5px;}
@@ -90,7 +91,7 @@
 				loadLanguageFilter = function(id, res, args){
 					Y.one('#filter').setContent('');
 					var repos = Y.JSON.parse(res.responseText),
-						source = '{{#langs}}<button class="checkbox" data-value="{{language}}">{{language}}</button>{{/langs}}',
+						source = '{{#langs}}<button class="checkbox pure-button" data-value="{{language}}">{{language}}</button>{{/langs}}',
 						template = Y.Handlebars.compile(source);
 						allLangs =  Y.map(repos, function(repo) { return repo.language; }),
 						reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
