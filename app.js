@@ -53,7 +53,7 @@ var http = require('http'),
         });
   
     },
-    staticContent = function (folder, file, ext) {
+    staticContent = function (folder, file) {
         console.log('static content');
         var _this = this;
         fs.readFile(path.join(__dirname, folder, file+'.'+folder), "binary", function(err, file) {

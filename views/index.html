@@ -19,29 +19,31 @@
 			.yui3-skin-night {
 				
 		    }
-	 		body{padding:50px; height:100%;}
-	 		label {padding: 5px;}
-	 		input{font-size:110%;padding:4px;}
+	 		body{
+	 			padding:50px; 
+	 			height:100%;
+	 		}
+
 	 		.repo-link{color:#8E8E8E;}
 	 		#filter{margin-top:5px;}
  		</style>
 	</head>
-	<body class="yui3-skin-repo pure-skin-repo">
-		<form>
-	 		<div class="form-row">
+	<body class="yui3-skin-repo">
+		<form class="pure-form">
+	 		<fieldset>
+	 			<legend>Github Username</legend>
 	 			<input type="text" id="name" placeholder="Github User Name" /> <button id="loadRepos" class="pure-button pure-button-primary"> Get Repos </button>
-	 		</div>
-
-	 		<div class="form-row">
-	 			
-	 		</div>
+	 		</fieldset>
 		</form>	
 		<div id="filter">
 			
 		</div>
 		<div id="results"></div>
- 		<script type="template/handlebars">
- 			<table>
+ 		<script id="repolist-template" type="template/handlebars">
+ 			{{#langs}}
+ 				<button class="checkbox pure-button" data-value="{{language}}">{{language}}</button>
+ 			{{/langs}}
+ 			<table class="pure-table pure-table-horizontal pure-table-striped">
  				<thead>
  					<th>Project Name</th>
  					<th>Description</th>
@@ -55,6 +57,7 @@
  							<td>{{description}}</td>
  							<td>{{language}}</td>
  							<td>{{owner}}</td>
+ 						</tr>
  					{{/items}}
  				</tbody>
  			</table>
@@ -128,8 +131,7 @@
 			Y.on('io:complete', loadTable);
 			Y.on('io:complete', loadLanguageFilter )
  			Y.on('domready', function(){
- 				var button = Y.one('#loadRepos');
- 				button.plug(Y.Plugin.Button);
+ 				var button = Y.one('#loadRepos'); 
 				button.on('click', function(e){ 
 					e.preventDefault();
 					var url;
