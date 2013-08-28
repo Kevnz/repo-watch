@@ -25,14 +25,21 @@ var http = require('http'),
  
     repos = function(username){
         console.log('Repo ');
+
         var response = this.res,
             request = this.req;
  
         var reap = new reaper();
-        reap.getWatchedRepositories(username, function(err, results){
-            response.write(JSON.stringify(results));
+        try {
+            reap.getWatchedRepositories(username, function(err, results) {
+                response.write(JSON.stringify(results));
+                response.end();
+            });
+        } catch (e) {
+            response.write(JSON.stringify({error:e, message:'bugger'}));
             response.end();
-        });
+        }
+
   
     },
     repoCompare = function(username, other_username){
