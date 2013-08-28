@@ -9,8 +9,6 @@ var http = require('http'),
     director = require('director');
     base = function (route) {
         var _this = this;
-        console.log(arguments);
-        //this.res.writeHead(200, { 'Content-Type': 'text/plain' });
         fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
             if(err) {
                 _this.res.writeHead(500, {"Content-Type": "text/plain"});
@@ -76,4 +74,4 @@ var server = http.createServer(function (req, res) {
  });
 
  
-  server.listen(17231);
+  server.listen(process.env.PORT || 17231);
