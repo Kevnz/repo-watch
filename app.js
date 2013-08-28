@@ -53,8 +53,21 @@ var http = require('http'),
         });
   
     },
-    staticContent = function (folder, file) {
+    staticContent = function (folder, file, ext) {
         console.log('static content');
+        var _this = this;
+        fs.readFile(path.join(__dirname, folder, file+'.'+ext), "binary", function(err, file) {
+            if(err) {
+                _this.res.writeHead(500, {"Content-Type": "text/plain"});
+                _this.res.write(err + "\n");
+                _this.res.end();
+                return;
+            }
+            
+            _this.res.writeHead(200);
+            _this.res.write(file, "binary");
+            _this.res.end();
+        });
     };
 
 var router = new director.http.Router({
@@ -65,7 +78,7 @@ var router = new director.http.Router({
     '/repos/compare/:firstuser/:seconduser' : {
         get: repoCompare
     },
-    '/static/:folder/:file': {
+    '/static/:folder/:file.:ext': {
         get: staticContent
     }
 });
