@@ -22,20 +22,6 @@ var http = require('http'),
             _this.res.end();
         });
     },
- 
-<<<<<<< HEAD
-	repos = function(username){
-		console.log('Repo ' + username);
-		var response = this.res,
-			request = this.req;
- 
- 		var reap = new reaper();
- 		reap.getWatchedRepositories(username, function(err, results){
-            console.log(results)
-    		response.write(JSON.stringify(results));
-    		response.end();
- 		});
-=======
     repos = function(username){
         console.log('Repo ');
 
@@ -71,7 +57,7 @@ var http = require('http'),
                 response.end();
             });
         });
->>>>>>> 47fda85aff7bfba81da25b93e7b472a478d594ed
+ 
   
     },
     staticContent = function (folder, file) {
@@ -114,4 +100,4 @@ var server = http.createServer(function (req, res) {
  });
 
  
-  server.listen(process.env.PORT || 17231);
+  server.listen(process.env.PORT || 4545);
