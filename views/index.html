@@ -10,14 +10,18 @@
 		<title>Github Starred Repositories</title>
 		<meta name="description" content="Look up repos"> 
 		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.1/pure-min.css">
+ 
 
  		<style type="text/css">
 			.yui3-skin-night {
-				background-color: #000;
+				
 		    }
-	 		body{padding:50px; height:100%;}
-	 		label {padding: 5px;}
-	 		input{font-size:110%;padding:4px;}
+	 		body{
+	 			padding:50px; 
+	 			height:100%;
+	 		}
+
 	 		.repo-link{color:#8E8E8E;}
 	 		#filter{margin-top:5px;}
 	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:94px;left:64px;
@@ -31,22 +35,41 @@
 	 		}
  		</style>
 	</head>
-	<body class="yui3-skin-night">
-		<form>
-	 		<div class="form-row">
-	 			<input type="text" id="name" placeholder="Github User Name" /> <button id="loadRepos"> Get Repos </button>
-	 		</div>
-
-	 		<div class="form-row">
-	 			
-	 		</div>
+	<body class="yui3-skin-repo">
+		<form class="pure-form">
+	 		<fieldset>
+	 			<legend>Github Username</legend>
+	 			<input type="text" id="name" placeholder="Github User Name" /> <button id="loadRepos" class="pure-button pure-button-primary"> Get Repos </button>
+	 		</fieldset>
 		</form>	
 		<div id="filter">
 			
 		</div>
 		<div id="results"></div>
- 
-	<script src="http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+ 		<script id="repolist-template" type="template/handlebars">
+ 			{{#langs}}
+ 				<button class="checkbox pure-button" data-value="{{language}}">{{language}}</button>
+ 			{{/langs}}
+ 			<table class="pure-table pure-table-horizontal pure-table-striped">
+ 				<thead>
+ 					<th>Project Name</th>
+ 					<th>Description</th>
+ 					<th>Language of Project</th>
+ 					<th>Project Owner</th>
+ 				</thead>
+ 				<tbody>
+ 					{{#items}}
+ 						<tr>
+ 							<td><a href="{{url}}" class="repo-link">{{name}}</a></td>
+ 							<td>{{description}}</td>
+ 							<td>{{language}}</td>
+ 							<td>{{owner}}</td>
+ 						</tr>
+ 					{{/items}}
+ 				</tbody>
+ 			</table>
+ 		</script>
+	<script src="http://yui.yahooapis.com/3.11.0/build/yui/yui-min.js"></script>
  	<script type="text/javascript">
  		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50', combine:true }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','gallery-funcprog', 'button-group','handlebars','io-queue', function(Y){
 
@@ -83,7 +106,7 @@
 				loadLanguageFilter = function(id, res, args){
 					Y.one('#filter').setContent('');
 					var repos = Y.JSON.parse(res.responseText),
-						source = '{{#langs}}<button class="checkbox" data-value="{{language}}">{{language}}</button>{{/langs}}',
+						source = '{{#langs}}<button class="checkbox pure-button" data-value="{{language}}">{{language}}</button>{{/langs}}',
 						template = Y.Handlebars.compile(source);
 						allLangs =  Y.map(repos, function(repo) { return repo.language; }),
 						reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
@@ -136,8 +159,7 @@
 			Y.on('io:complete', loadTable);
 			Y.on('io:complete', loadLanguageFilter )
  			Y.on('domready', function(){
- 				var button = Y.one('#loadRepos');
- 				button.plug(Y.Plugin.Button);
+ 				var button = Y.one('#loadRepos'); 
 				button.on('click', function(e){ 
 
 					Y.log('clickity click');
