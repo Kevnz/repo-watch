@@ -7,7 +7,9 @@ var fs = require('fs'),
 
 var http = require('http'),
     director = require('director');
-    base = function (route) {
+var base = function (route) {
+        console.log('base route');
+        console.log(route);
         var _this = this;
         fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
             if(err) {
@@ -21,8 +23,8 @@ var http = require('http'),
             _this.res.write(file, "binary");
             _this.res.end();
         });
-    },
-    repos = function(username){
+    };
+var repos = function(username){
         console.log('Repo ');
 
         var response = this.res,
@@ -40,8 +42,8 @@ var http = require('http'),
         }
 
   
-    },
-    repoCompare = function(username, other_username){
+    };
+var repoCompare = function(username, other_username){
         console.log('Repo ');
         var response = this.res,
             request = this.req;
@@ -59,8 +61,9 @@ var http = require('http'),
         });
  
   
-    },
-    staticContent = function (folder, file) {
+    };
+
+var staticContent = function (folder, file) {
         console.log('static content');
         var _this = this;
         fs.readFile(path.join(__dirname, folder, file+'.'+folder), "binary", function(err, file) {
@@ -76,9 +79,13 @@ var http = require('http'),
             _this.res.end();
         });
     };
-
-var router = new director.http.Router({
-    '/' : {get: base },
+var routes = {
+    '/' : {
+        get: base
+    },
+    '/tester' : {
+        get: function(){ console.log('oh bugger it');}
+    },
     '/repos/:username': {
         get: repos
     },
@@ -88,9 +95,17 @@ var router = new director.http.Router({
     '/static/:folder/:file': {
         get: staticContent
     }
-});
+};
+function helloWorld() {
+    this.res.writeHead(200, { 'Content-Type': 'text/plain' })
+    this.res.end('hello world');
+  }
+
+var router = new director.http.Router(routes);
  
 var server = http.createServer(function (req, res) {
+    console.log('test');
+    console.log(req);
     router.dispatch(req, res, function (err) {
         if (err) {
             res.writeHead(404);
@@ -98,6 +113,6 @@ var server = http.createServer(function (req, res) {
         }
     });
  });
-
- 
-  server.listen(process.env.PORT || 4545);
+server.on('request', function() {console.log('is this thing on?');});
+console.log('preparing to start');
+server.listen(process.env.PORT || 4545);

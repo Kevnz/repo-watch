@@ -7,16 +7,14 @@ YUI.add('repos-app', function (Y) {
                 preserve: false
             }
         },
-        initializer : function () { 
-            Y.message('the init of the login sub app');
-
-            this.route('/entry', this.showEntry);
+        initializer : function () {
+            this.route('/:username', this.showEntry);
         },
         showRepos: function (req, res, next) {
             Y.log('in the show showEntry');
             Y.log(this.currentUser);
-            this.showView('entry', { template: '#repolist-template', currentUser: this.currentUser });
+            this.showView('repo', { template: '#repolist-template' });
         },
     }, { 
     });
-}, '0.0.0', { requires:['app', 'entry-view']});
+}, '0.0.0', { requires:['app', 'repo-view']});
