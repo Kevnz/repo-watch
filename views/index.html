@@ -24,7 +24,7 @@
 
 	 		.repo-link{color:#8E8E8E;}
 	 		#filter{margin-top:5px;}
-	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:94px;left:64px;
+	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:90px;left:60px;
 	 			background-color: rgb(126,126,126); opacity: 0.5;
 	 			color:white;
 	 			padding:20px;
@@ -144,7 +144,7 @@
 				var app = new Y.ReposApp({container: '#results'});
 				app.render(); 
  
-
+				app.replace(window.location.path);
  				var button = Y.one('#loadRepos'); 
 				button.on('click', function(e){ 
 					Y.log('clickity click');
