@@ -30,7 +30,8 @@ YUI.add('repo-list-view', function (Y) {
         languageClick: function (e) {
             e.preventDefault();
         },
-        listSort: funciton (e) {
+
+        listSort: function (){
             var sort = e.currentTarget.get('data-attr'); 
             this.get('modelList').comparator = function (model) {
                 return model.get(sort);
