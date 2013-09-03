@@ -1,12 +1,12 @@
-YUI.add('repo', function (Y) {
+YUI.add('repo-model', function (Y) {
     Y.namespace('data').Repo =  Y.Base.create('repoModel', Y.Model, [Y.ModelSync.REST], {
-        //url: '/repos/{name}',
-        //idAttribute : 'name',
+        //url: '/repos/{username}',
+        idAttribute : 'name',
         initializer: function () {
 
         }
     }, {
-        ATTRS: { 
+        ATTRS: {
             name : {
                 value: ''
             },

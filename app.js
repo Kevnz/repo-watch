@@ -9,7 +9,6 @@ var http = require('http'),
     director = require('director');
 var base = function (route) {
         console.log('base route');
-        console.log(route);
         var _this = this;
         fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
             if(err) {
@@ -79,6 +78,23 @@ var staticContent = function (folder, file) {
             _this.res.end();
         });
     };
+var jsContent = function (folder, file) {
+        console.log('static content');
+        folder = '/js/' + (folder || '');
+        console.log(folder);
+        var _this = this;
+        fs.readFile(path.join(__dirname, folder, file || ''), "binary", function(err, file) {
+            if(err) {
+                _this.res.writeHead(500, {"Content-Type": "text/plain"});
+                _this.res.write(err + "\n");
+                _this.res.end();
+                return;
+            } 
+            _this.res.writeHead(200, {"Content-Type": "application/javascript"});
+            _this.res.write(file, "binary");
+            _this.res.end();
+        });
+    };
 var routes = {
     '/' : {
         get: base
@@ -94,10 +110,16 @@ var routes = {
     },
     '/static/:folder/:file': {
         get: staticContent
+    },
+    '/js/:file.js': {
+        get: jsContent
+    },
+    '/js/:folder/:file.js': {
+        get: jsContent
     }
 };
 function helloWorld() {
-    this.res.writeHead(200, { 'Content-Type': 'text/plain' })
+    this.res.writeHead(200, { 'Content-Type': 'text/plain' });
     this.res.end('hello world');
   }
 
@@ -105,7 +127,6 @@ var router = new director.http.Router(routes);
  
 var server = http.createServer(function (req, res) {
     console.log('test');
-    console.log(req);
     router.dispatch(req, res, function (err) {
         if (err) {
             res.writeHead(404);

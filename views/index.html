@@ -69,41 +69,16 @@
  				</tbody>
  			</table>
  		</script>
-	<script src="http://yui.yahooapis.com/3.11.0/build/yui/yui-min.js"></script>
+	<script src="http://yui.yahooapis.com/3.12.0/build/yui/yui-min.js"></script>
+	<script src="/js/collection-view.js"></script>
+	<script src="/js/models/repo.js"></script>
+	<script src="/js/models/repo-list.js"></script>
+	<script src="/js/views/repo-list-view.js"></script>
+	<script src="/js/repo-app.js"></script>
  	<script type="text/javascript">
- 		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50', combine:true }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','gallery-funcprog', 'button-group','handlebars','io-queue', function(Y){
+ 		YUI({skin: 'night', gallery: 'gallery-2012.04.12-13-50', combine:true }).use('node-base', 'event-base', 'io-base','button-plugin', 'cssbutton', 'json', 'datatable-sort', 'substitute','gallery-funcprog', 'button-group','handlebars','io-queue', 'repo-list-view', 'repo-list','repos-app', function(Y){
 
- 			var formatter = function link(o) { 
- 					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.url, name:o.data.name}))	 
-				},
-				ownerFormatter = function (o){
-					o.cell.setContent(Y.substitute('<a href="{url}" class="repo-link">{name}</a>', {url: o.data.owner_url, name:o.data.owner}))	
-				},
-				table,
-				results,
-				textHandler,
- 				loadTable = function(id, res, args){ 
- 					Y.one('#results').set('innerHTML', '');
- 					Y.log(res.responseText.length);
- 					if (res.responseText.length < 2){
- 						results = { }
- 					}else{
-						results = Y.JSON.parse(res.responseText);
- 					}
-					table = new Y.DataTable({
-						columns: [
-							{key: "name", label: "Project Name", sortable:true, nodeFormatter:formatter}, 
-							{key: "description", label: "Description", sortable:true}, 
-							{key: "language", label: "Language of Project", sortable:true},
-							{key: "owner", label: "Project Owner", sortable: true,  nodeFormatter:ownerFormatter}
-						], 
-						data: results,
-						caption: "Watched Repositories!",
-						summary: "Github Repositories that are being watched"
-					}); 
-					table.render("#results"); 
-				},
-				loadLanguageFilter = function(id, res, args){
+ 			var loadLanguageFilter = function(id, res, args){
 					Y.one('#filter').setContent('');
 					var repos = Y.JSON.parse(res.responseText),
 						source = '{{#langs}}<button class="checkbox pure-button" data-value="{{language}}">{{language}}</button>{{/langs}}',
@@ -156,22 +131,19 @@
  				}
  			Y.on('io:start', showThrobber);
  			Y.on('io:complete', hideThrobber)
-			Y.on('io:complete', loadTable);
-			Y.on('io:complete', loadLanguageFilter )
+			//Y.on('io:complete', loadTable);
+			//Y.on('io:complete', loadLanguageFilter )
  			Y.on('domready', function(){
+				var app = new Y.ReposApp({container: '#results'});
+				app.render(); 
+ 
+
  				var button = Y.one('#loadRepos'); 
 				button.on('click', function(e){ 
-
 					Y.log('clickity click');
-
 					e.preventDefault();
-					 
-					var url;
-					if(Y.one('#name').get('value')){
-						url = 'http://' + window.location.host +'/repos/' + Y.one('#name').get('value');
-						Y.log(url);
-						Y.io(url); 
-					}
+					app.save('/stars/' + Y.one('#name').get('value'));
+ 
 				}); 
 			});
  		});
