@@ -99,8 +99,8 @@ var routes = {
     '/' : {
         get: base
     },
-    '/tester' : {
-        get: function(){ console.log('oh bugger it');}
+    '/stared/:username' : {
+        get: base
     },
     '/repos/:username': {
         get: repos

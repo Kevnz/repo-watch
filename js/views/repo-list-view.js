@@ -31,7 +31,7 @@ YUI.add('repo-list-view', function (Y) {
             e.preventDefault();
         },
 
-        listSort: function (){
+        listSort: function (e){
             var sort = e.currentTarget.get('data-attr'); 
             this.get('modelList').comparator = function (model) {
                 return model.get(sort);
