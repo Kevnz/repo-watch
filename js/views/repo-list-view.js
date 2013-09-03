@@ -5,6 +5,9 @@ YUI.add('repo-list-view', function (Y) {
         events: {
             '.lang-button': {
                 click : 'languageClick'
+            },
+            'th' : {
+                click: 'listSort'
             }
         },
         initializer: function(options){
@@ -27,9 +30,17 @@ YUI.add('repo-list-view', function (Y) {
         languageClick: function (e) {
             e.preventDefault();
         },
+        listSort: funciton (e) {
+            var sort = e.currentTarget.get('data-attr'); 
+            this.get('modelList').comparator = function (model) {
+                return model.get(sort);
+            };
+            this.get('modelList').sort({descending: this._sort.descending});
+        },
         onRender: function () {
             var self = this;
-        }
+        },
+        _sort : {attr: '', descending: false }  
 
     });
 }, '0.0.1', { requires:['collection-view']});
