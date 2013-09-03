@@ -99,7 +99,7 @@ var routes = {
     '/' : {
         get: base
     },
-    '/stared/:username' : {
+    '/stars/:username' : {
         get: base
     },
     '/repos/:username': {
