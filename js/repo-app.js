@@ -5,6 +5,10 @@ YUI.add('repos-app', function (Y) {
             repolist: {
                 type: Y.RepoListView,
                 preserve: false
+            },
+            loading: {
+                type:Y.LoadingView,
+                preserve: false
             }
         },
         initializer : function () {
@@ -17,6 +21,7 @@ YUI.add('repos-app', function (Y) {
         showRepos: function (req, res, next) {
             var self = this;
             Y.log('in the show showEntry');
+            self.showView('loading');
             var list = new Y.data.RepoList({username: 'Kevnz'});
             list.load(function () {
  
@@ -34,4 +39,4 @@ YUI.add('repos-app', function (Y) {
             }
         }
     });
-}, '0.0.0', { requires:['app', 'repo-list-view']});
+}, '0.0.0', { requires:['app', 'repo-list-view','loading-view']});

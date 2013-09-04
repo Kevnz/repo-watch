@@ -23,6 +23,14 @@
 	 		}
 
 	 		.repo-link{color:#8E8E8E;}
+	 		.loading {
+	 			background-color: #194894;
+	 			background-image: url('http://octodex.github.com/images/nyantocat.gif');
+	 			min-height: 600px;
+	 			background-position: center;
+	 			background-repeat: no-repeat;
+
+	 		}
 	 		#filter{margin-top:5px;}
 	 		.throbber{ z-index: 9; position: absolute;border:1px #ccc solid; width: 90%;height: 90%;top:90px;left:60px;
 	 			background-color: rgb(126,126,126); opacity: 0.5;
@@ -80,6 +88,7 @@
 	<script src="/js/collection-view.js"></script>
 	<script src="/js/models/repo.js"></script>
 	<script src="/js/models/repo-list.js"></script>
+	<script src="/js/views/loading-view.js"></script>
 	<script src="/js/views/repo-list-view.js"></script>
 	<script src="/js/repo-app.js"></script>
  	<script type="text/javascript">
@@ -136,8 +145,8 @@
  					var throbber = Y.all('.throbber')
  					if (throbber) throbber.remove();
  				}
- 			Y.on('io:start', showThrobber);
- 			Y.on('io:complete', hideThrobber)
+ 			//Y.on('io:start', showThrobber);
+ 			//Y.on('io:complete', hideThrobber)
 			//Y.on('io:complete', loadTable);
 			//Y.on('io:complete', loadLanguageFilter )
  			Y.on('domready', function(){

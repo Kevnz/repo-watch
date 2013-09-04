@@ -16,7 +16,6 @@ Y.extend(CollectionView, Y.View, {
             compiledTemplate = Y.Handlebars.compile(source),
             data = { items: this.get('modelList').toJSON() },
             html = compiledTemplate(data);
-        console.log(html)
         container.setHTML(html);
 
         if (!container.inDoc()) {
