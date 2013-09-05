@@ -22,7 +22,7 @@ YUI.add('repos-app', function (Y) {
             var self = this;
             Y.log('in the show showEntry');
             self.showView('loading');
-            var list = new Y.data.RepoList({username: 'Kevnz'});
+            var list = new Y.data.RepoList({username: req.params.username});
             list.load(function () {
  
                 self.showView('repolist', {  modelList: list, template: '#repolist-template' });
