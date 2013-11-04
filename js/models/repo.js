@@ -7,6 +7,9 @@ YUI.add('repo-model', function (Y) {
         }
     }, {
         ATTRS: {
+            url: {
+                value: ''
+            },
             name : {
                 value: ''
             },
