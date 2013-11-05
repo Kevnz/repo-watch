@@ -44,6 +44,9 @@
 	 			font-family: HelveticaNeue,arial,helvetica,clean,sans-serif;
 
 	 		}
+	 		.languages {
+	 			padding-bottom: 10px;
+	 		}
  		</style>
 	</head>
 	<body class="yui3-skin-repo">
@@ -65,9 +68,11 @@
 			</div>
 		</script>
  		<script id="repolist-template" type="template/handlebars">
- 			{{#langs}}
- 				<button class="checkbox pure-button" data-value="{{name}}">{{name}}</button>
- 			{{/langs}}
+ 			<div class="languages">
+	 			{{#langs}}
+	 				<button class="checkbox pure-button" data-value="{{name}}">{{name}}</button>
+	 			{{/langs}}
+ 			</div>
  			<table class="pure-table pure-table-horizontal pure-table-striped">
  				<thead>
  					<th><a href="#" data-attr="name">Project Name</a></th>
