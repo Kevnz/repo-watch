@@ -67,13 +67,13 @@ YUI.add('repo-list-view', function (Y) {
                 repos = modelList.filter({asList: true},function (item){
                     return item.get('language') === langFilter;
                 });
-                
+
             }
             var container = this.get('container'),
                 templateNode = Y.one(this.template),
                 source = templateNode.getHTML(),
                 compiledTemplate = Y.Handlebars.compile(source),
-                data = { items: repos.toJSON(), langs: languages },
+                data = { items: repos, langs: languages },
                 html = compiledTemplate(data);
             container.setHTML(html);
             Y.log(languages);
