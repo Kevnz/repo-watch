@@ -14,7 +14,7 @@ YUI.add('repo-list', function (Y) {
             }),
             reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
                 if(lang && langs.indexOf(lang) === -1) {
-                    langs.push(lang); 
+                    langs.push({ name: lang }); 
                 }
                 return langs;
             });

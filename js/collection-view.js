@@ -16,7 +16,7 @@ Y.extend(CollectionView, Y.View, {
             templateNode = Y.one(this.template),
             source = templateNode.getHTML(),
             compiledTemplate = Y.Handlebars.compile(source),
-            data = { items: modelList.toJSON() },
+            data = { items: modelList.toJSON(), langs: languages },
             html = compiledTemplate(data);
         container.setHTML(html);
         Y.log(languages);
