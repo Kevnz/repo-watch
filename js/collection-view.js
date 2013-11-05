@@ -11,13 +11,12 @@ Y.extend(CollectionView, Y.View, {
         }
     },
     filter: function (e){
+        Y.log('filter clicked');
         e.preventDefault();
         var lang = e.currentTarget.getData('lang');
         this.isFiltered = true;
-        currentFilter = lang;
+        this.currentFilter = lang;
         this.render();
-
-
     },
     currentFilter: null,
     isFiltered: false,
@@ -29,6 +28,7 @@ Y.extend(CollectionView, Y.View, {
         var modelList = this.get('modelList');
         var languages = modelList.getLanuages();
         var repos = modelList.toJSON(); 
+        Y.log(this.isFiltered);
         if (this.isFiltered) {
             var langFilter = this.currentFilter;
             repos = modelList.filter(function (item){
