@@ -64,15 +64,15 @@
  		<script id="repolist-template" type="template/handlebars">
  			<div class="languages">
 	 			{{#langs}}
-	 				<button class="checkbox pure-button lang-button" data-value="{{name}}">{{name}}</button>
+	 				<button class="checkbox pure-button lang-button" data-repo-language="{{name}}">{{name}}</button>
 	 			{{/langs}}
  			</div>
  			<table class="pure-table pure-table-horizontal pure-table-striped">
  				<thead>
- 					<th><a href="#" data-attr="name">Project Name</a></th>
- 					<th><a href="#" data-attr="description">Description</a></th>
- 					<th><a href="#" data-attr="language">Language of Project</a></th>
- 					<th><a href="#" data-attr="owner">Project Owner</a></th>
+ 					<th><a href="#" data-repo-attr="name">Project Name</a></th>
+ 					<th><a href="#" data-repo-attr="description">Description</a></th>
+ 					<th><a href="#" data-repo-attr="language">Language of Project</a></th>
+ 					<th><a href="#" data-repo-attr="owner">Project Owner</a></th>
  				</thead>
  				<tbody>
  					{{#items}}

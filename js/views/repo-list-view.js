@@ -35,7 +35,7 @@ YUI.add('repo-list-view', function (Y) {
         listSort: function (e){
             e.preventDefault();
             Y.log(e);
-            var sort = e.currentTarget.getData('attr'); 
+            var sort = e.currentTarget.getData('repo-attr'); 
             Y.log(sort);
             this.get('modelList').comparator = function (model) {
                 return model.get(sort);
@@ -45,7 +45,7 @@ YUI.add('repo-list-view', function (Y) {
         filterLanguages: function (e){
             Y.log('filter clicked');
             e.preventDefault();
-            var lang = e.currentTarget.getData('lang');
+            var lang = e.currentTarget.getData('repo-language');
             this.isFiltered = true;
             this.currentFilter = lang;
             this.render();
