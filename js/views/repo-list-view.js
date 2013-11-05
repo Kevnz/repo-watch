@@ -65,7 +65,7 @@ YUI.add('repo-list-view', function (Y) {
                 var langFilter = this.currentFilter;
                 repos = modelList.filter(function (item){
                     return item.get('language') === langFilter;
-                }).toJSON();
+                });
 
             }
             var container = this.get('container'),
