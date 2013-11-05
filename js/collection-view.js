@@ -5,6 +5,22 @@ var CollectionView = function () {
 };
 
 Y.extend(CollectionView, Y.View, {
+    events : {
+        'button': {
+            click: 'filter'
+        }
+    },
+    filter: function (e){
+        e.preventDefault();
+        var lang = e.currentTarget.getData('lang');
+        this.isFiltered = true;
+        currentFilter = lang;
+        this.render();
+
+
+    },
+    currentFilter: null,
+    isFiltered: false,
     initializer: function () {
         var list = this.get('modelList');
         list.after(['add', 'remove', 'reset'], this.render, this);
@@ -12,6 +28,14 @@ Y.extend(CollectionView, Y.View, {
     render: function () {
         var modelList = this.get('modelList');
         var languages = modelList.getLanuages();
+        var repos = modelList.toJSON(); 
+        if (this.isFiltered) {
+            var langFilter = this.currentFilter;
+            repos = modelList.filter(function (item){
+                return item.get('language') === langFilter;
+            }).toJSON();
+
+        }
         var container = this.get('container'),
             templateNode = Y.one(this.template),
             source = templateNode.getHTML(),
