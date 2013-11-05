@@ -1,6 +1,6 @@
 YUI.add('collection-view', function (Y, NAME) {
 
-var CollectionView =  Y.Base.create('repoListView', Y.View, {
+Y.CollectionView =  Y.Base.create('repoListView', Y.View, {
     events : {
         '.lang-button': {
             click: 'filterLanguages'
@@ -47,6 +47,6 @@ var CollectionView =  Y.Base.create('repoListView', Y.View, {
         return this;
     }
 });
-Y.CollectionView = CollectionView;
+ 
 
-}, '@VERSION@');
+}, '0.1.0',  { requires:['view', 'base'] } );
