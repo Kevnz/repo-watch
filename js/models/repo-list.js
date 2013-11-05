@@ -4,6 +4,16 @@ YUI.add('repo-list', function (Y) {
         model : Y.data.Repo,
         initializer: function () {
 
+        },
+        getLanuages : function () {
+            var repos = this.toArray();
+            var allLangs =  Y.map(repos, function(repo) { return repo.get('language'); }),
+            reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
+                if(lang && langs.indexOf(lang) === -1) {
+                    langs.push(lang); 
+                }
+                return langs;
+            });
         }
     }, {
         ATTRS: {
@@ -12,4 +22,4 @@ YUI.add('repo-list', function (Y) {
             }
         }
     });
-}, '0.0.1', {requires:['repo-model', 'model-sync-rest']});
+}, '0.0.1', {requires:['repo-model', 'gallery-funcprog', 'model-sync-rest']});

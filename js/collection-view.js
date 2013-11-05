@@ -10,14 +10,16 @@ Y.extend(CollectionView, Y.View, {
         list.after(['add', 'remove', 'reset'], this.render, this);
     },
     render: function () {
+        var modelList = this.get('modelList');
+        var languages = modelList.getLanuages();
         var container = this.get('container'),
             templateNode = Y.one(this.template),
             source = templateNode.getHTML(),
             compiledTemplate = Y.Handlebars.compile(source),
-            data = { items: this.get('modelList').toJSON() },
+            data = { items: modelList.toJSON() },
             html = compiledTemplate(data);
         container.setHTML(html);
-
+        Y.log(languages);
         if (!container.inDoc()) {
             Y.one('body').append(container);
         }
