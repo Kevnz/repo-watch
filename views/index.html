@@ -60,17 +60,11 @@
 			
 		</div>
 		<div id="results"></div>
-		<script id="language-list-template" type="template/handlebars">
-			<div class="languages">
-				{{#languages}}
-					<button class="lang-button checkbox pure-button" data-lang="{{language}}">{{language}}</button>
-				{{/languages}}
-			</div>
-		</script>
+ 
  		<script id="repolist-template" type="template/handlebars">
  			<div class="languages">
 	 			{{#langs}}
-	 				<button class="checkbox pure-button" data-value="{{name}}">{{name}}</button>
+	 				<button class="checkbox pure-button lang-button" data-value="{{name}}">{{name}}</button>
 	 			{{/langs}}
  			</div>
  			<table class="pure-table pure-table-horizontal pure-table-striped">
