@@ -6,7 +6,7 @@ var CollectionView = function () {
 
 Y.extend(CollectionView, Y.View, {
     events : {
-        'button': {
+        '.lang-button': {
             click: 'filter'
         }
     },
