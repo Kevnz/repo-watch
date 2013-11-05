@@ -62,17 +62,18 @@ YUI.add('repo-list-view', function (Y) {
             var repos = modelList.toJSON(); 
             Y.log(this.isFiltered);
             if (this.isFiltered) {
+                Y.log('this is filtered');
                 var langFilter = this.currentFilter;
                 repos = modelList.filter({asList: true},function (item){
                     return item.get('language') === langFilter;
                 });
-
+                
             }
             var container = this.get('container'),
                 templateNode = Y.one(this.template),
                 source = templateNode.getHTML(),
                 compiledTemplate = Y.Handlebars.compile(source),
-                data = { items: modelList.toJSON(), langs: languages },
+                data = { items: repos.toJSON(), langs: languages },
                 html = compiledTemplate(data);
             container.setHTML(html);
             Y.log(languages);
