@@ -63,7 +63,7 @@ YUI.add('repo-list-view', function (Y) {
             Y.log(this.isFiltered);
             if (this.isFiltered) {
                 var langFilter = this.currentFilter;
-                repos = modelList.filter(function (item){
+                repos = modelList.filter({asList: true},function (item){
                     return item.get('language') === langFilter;
                 });
 
