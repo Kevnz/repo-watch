@@ -9,16 +9,17 @@ YUI.add('repo-list', function (Y) {
             var repos = this.toArray();
             Y.log(repos);
             var allLangs =  Y.map(repos, function(repo) { 
-                Y.log(repo);
                 return repo.get('language');
             }),
-            reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
-                if(lang && langs.indexOf(lang) === -1) {
-                    langs.push({ name: lang }); 
+            reducedLangs = Y.reduce(allLangs, [], function (langs, lang) { 
+                if (lang && langs.indexOf(lang) === -1) {
+                    langs.push(lang); 
                 }
                 return langs;
             });
-            return reducedLangs;
+            return Y.map(reducedLangs, function(repo) { 
+                return {name: repo };
+            });
         }
     }, {
         ATTRS: {
