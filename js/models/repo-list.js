@@ -7,13 +7,18 @@ YUI.add('repo-list', function (Y) {
         },
         getLanuages : function () {
             var repos = this.toArray();
-            var allLangs =  Y.map(repos, function(repo) { return repo.get('language'); }),
+            Y.log(repos);
+            var allLangs =  Y.map(repos, function(repo) { 
+                Y.log(repo);
+                return repo.get('language');
+            }),
             reducedLangs = Y.reduce(allLangs, [] ,function(langs, lang) { 
                 if(lang && langs.indexOf(lang) === -1) {
                     langs.push(lang); 
                 }
                 return langs;
             });
+            return reducedLangs;
         }
     }, {
         ATTRS: {
