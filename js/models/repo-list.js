@@ -24,7 +24,7 @@ YUI.add('repo-list', function (Y) {
     }, {
         ATTRS: {
             username: {
-                value:''
+                value: ''
             }
         }
     });

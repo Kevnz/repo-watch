@@ -1,16 +1,12 @@
 YUI.add('collection-view', function (Y, NAME) {
 
-var CollectionView = function () {
-    CollectionView.superclass.constructor.apply(this, arguments);
-};
-
-Y.extend(CollectionView, Y.View, {
+var CollectionView =  Y.Base.create('repoListView', Y.View, {
     events : {
         '.lang-button': {
-            click: 'filter'
+            click: 'filterLanguages'
         }
     },
-    filter: function (e){
+    filterLanguages: function (e){
         Y.log('filter clicked');
         e.preventDefault();
         var lang = e.currentTarget.getData('lang');
