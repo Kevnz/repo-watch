@@ -42,6 +42,25 @@ var repos = function(username){
 
   
     };
+    var userRepos = function(username){
+        console.log('Repos the user has ');
+
+        var response = this.res,
+            request = this.req;
+ 
+        var reap = new reaper();
+        try {
+            reap.getUserRepositories(username, function(err, results) {
+                response.write(JSON.stringify(results));
+                response.end();
+            });
+        } catch (e) {
+            response.write(JSON.stringify({error:e, message:'bugger'}));
+            response.end();
+        }
+
+  
+    };
 var repoCompare = function(username, other_username){
         console.log('Repo ');
         var response = this.res,
@@ -104,6 +123,9 @@ var routes = {
     },
     '/repos/:username': {
         get: repos
+    },
+    '/user/repos/:username': {
+        get: userRepos
     },
     '/repos/compare/:firstuser/:seconduser' : {
         get: repoCompare
