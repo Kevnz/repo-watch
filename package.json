@@ -1,12 +1,13 @@
 {
-    "name": "watched"
-  , "version": "0.0.1"
-  , "engines": {
-    "node": "0.8.19"
-  }
-  , "private": true
-  , "dependencies": {
-      "github": ">=0.0.1"
-    , "director": ">= 0.0.1"
+  "name": "watched",
+  "version": "0.0.1",
+  "engines": {
+    "node": "0.12"
+  },
+  "private": true,
+  "dependencies": {
+    "director": ">= 0.0.1",
+    "github": ">=0.0.1",
+    "xtconf": "^1.0.0"
   }
 }
