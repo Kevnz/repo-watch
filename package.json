@@ -1,13 +1,22 @@
 {
   "name": "watched",
   "version": "0.0.1",
-  "engines": {
-    "node": "0.12"
-  },
   "private": true,
   "dependencies": {
     "director": ">= 0.0.1",
     "github": ">=0.0.1",
+    "griddle-react": "^0.2.4",
+    "react": "^0.12.2",
+    "react-router": "^0.12.4",
+    "react-tools": "^0.12.2",
+    "underscore": "^1.8.2",
     "xtconf": "^1.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.9.2",
+    "reactify": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0"
   }
 }

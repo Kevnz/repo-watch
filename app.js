@@ -7,6 +7,8 @@ var fs = require('fs'),
 
 var http = require('http'),
     director = require('director');
+
+
 var base = function (route) {
         console.log('base route');
         var _this = this;
@@ -114,6 +116,40 @@ var jsContent = function (folder, file) {
             _this.res.end();
         });
     };
+var reactContent = function (file) {
+        console.log('static content');
+        folder = '/node_modules/react/dist/';
+        console.log(folder);
+        var _this = this;
+        fs.readFile(path.join(__dirname, folder, file || ''), "binary", function(err, file) {
+            if(err) {
+                _this.res.writeHead(500, {"Content-Type": "text/plain"});
+                _this.res.write(err + "\n");
+                _this.res.end();
+                return;
+            } 
+            _this.res.writeHead(200, {"Content-Type": "application/javascript"});
+            _this.res.write(file, "binary");
+            _this.res.end();
+        });
+    };
+var griddleContent = function (file) {
+        console.log('static content');
+        folder = '/node_modules/griddle-react/build/';
+        console.log(folder);
+        var _this = this;
+        fs.readFile(path.join(__dirname, folder, file || ''), "binary", function(err, file) {
+            if(err) {
+                _this.res.writeHead(500, {"Content-Type": "text/plain"});
+                _this.res.write(err + "\n");
+                _this.res.end();
+                return;
+            } 
+            _this.res.writeHead(200, {"Content-Type": "application/javascript"});
+            _this.res.write(file, "binary");
+            _this.res.end();
+        });
+    };
 var routes = {
     '/' : {
         get: base
@@ -138,6 +174,12 @@ var routes = {
     },
     '/js/:file.js': {
         get: jsContent
+    },
+    '/jsreact/:file.js': {
+        get: reactContent
+    },
+    '/jsgriddle/:file.js': {
+        get: griddleContent
     },
     '/js/:folder/:file.js': {
         get: jsContent
