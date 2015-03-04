@@ -46,7 +46,7 @@ YUI.add('repos-app', function (Y) {
                 value: [
                     {path: '/', callbacks: 'handleHome'},
                     {path: '/stars/:username', callbacks: 'showRepos' },
-                    {path: '/repos/:username', callbacks: 'showUserRepos' }
+                    {path: '/userrepos/:username', callbacks: 'showUserRepos' }
                 ]
             }
         }

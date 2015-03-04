@@ -121,9 +121,9 @@ var routes = {
     '/stars/:username' : {
         get: base
     },
-    '/repos/:username' : {
+    '/userrepos/:username' : {
         get: base
-    }
+    },
     '/repos/:username': {
         get: repos
     },
