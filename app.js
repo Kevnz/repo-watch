@@ -104,6 +104,7 @@ var jsContent = function (folder, file) {
         var _this = this;
         fs.readFile(path.join(__dirname, folder, file || ''), "binary", function(err, file) {
             if(err) {
+                 console.log('danger');
                 _this.res.writeHead(500, {"Content-Type": "text/plain"});
                 _this.res.write(err + "\n");
                 _this.res.end();
