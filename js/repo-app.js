@@ -22,6 +22,17 @@ YUI.add('repos-app', function (Y) {
             var self = this;
             Y.log('in the show showEntry');
             self.showView('loading');
+            var list = new Y.data.RepoList({username: req.params.username, url:'/user/repos/{username}'});
+            list.load(function () {
+ 
+                self.showView('repolist', {  modelList: list, template: '#repolist-template' });
+            });
+            
+        },
+        showUserRepos: function (req, res, next) {
+            var self = this;
+            Y.log('in the show showEntry');
+            self.showView('loading');
             var list = new Y.data.RepoList({username: req.params.username});
             list.load(function () {
  
@@ -34,7 +45,8 @@ YUI.add('repos-app', function (Y) {
             routes: {
                 value: [
                     {path: '/', callbacks: 'handleHome'},
-                    {path: '/stars/:username', callbacks: 'showRepos' }
+                    {path: '/stars/:username', callbacks: 'showRepos' },
+                    {path: '/repos/:username', callbacks: 'showUserRepos' }
                 ]
             }
         }
