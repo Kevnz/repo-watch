@@ -18,7 +18,8 @@ var base = function (route) {
                 return;
             }
             
-            _this.res.writeHead(200);
+            
+            _this.res.writeHead(200,{"Access-Control-Allow-Origin": "*"});
             _this.res.write(file, "binary");
             _this.res.end();
         });
@@ -32,6 +33,7 @@ var repos = function(username){
         var reap = new reaper();
         try {
             reap.getWatchedRepositories(username, function(err, results) {
+                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
                 response.write(JSON.stringify(results));
                 response.end();
             });
@@ -51,6 +53,7 @@ var repos = function(username){
         var reap = new reaper();
         try {
             reap.getUserRepositories(username, function(err, results) {
+                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
                 response.write(JSON.stringify(results));
                 response.end();
             });
@@ -73,6 +76,7 @@ var repoCompare = function(username, other_username){
                 var full_results = [];
                 full_results.push({user: username, repos: results});
                 full_results.push({user: other_username, repos: second_results});
+                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
                 response.write(JSON.stringify(full_results));
                 response.end();
             });
@@ -116,6 +120,9 @@ var jsContent = function (folder, file) {
         });
     };
 var routes = {
+    '/hi': {
+        get: helloWorld
+    },
     '/' : {
         get: base
     },
@@ -162,4 +169,4 @@ var server = http.createServer(function (req, res) {
  });
 server.on('request', function() {console.log('is this thing on?');});
 console.log('preparing to start');
-server.listen(process.env.PORT || 4545);
+server.listen(process.env.PORT || 3545);
