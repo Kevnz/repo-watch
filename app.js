@@ -1,172 +1,61 @@
-var GitHubApi = require("github");
-var fs = require('fs'),
-    path = require('path'),
-    str = process.cwd(),
-    reaper = require('./lib/reaper');
- 
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-var http = require('http'),
-    director = require('director');
-var base = function (route) {
-        console.log('base route');
-        var _this = this;
-        fs.readFile(path.join(__dirname, '/views/index.html'), "binary", function(err, file) {
-            if(err) {
-                _this.res.writeHead(500, {"Content-Type": "text/plain"});
-                _this.res.write(err + "\n");
-                _this.res.end();
-                return;
-            }
-            
-            
-            _this.res.writeHead(200,{"Access-Control-Allow-Origin": "*"});
-            _this.res.write(file, "binary");
-            _this.res.end();
-        });
-    };
-var repos = function(username){
-        console.log('Repo ');
+var routes = require('./routes/index');
+var api = require('./routes/api');
 
-        var response = this.res,
-            request = this.req;
- 
-        var reap = new reaper();
-        try {
-            reap.getWatchedRepositories(username, function(err, results) {
-                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
-                response.write(JSON.stringify(results));
-                response.end();
-            });
-        } catch (e) {
-            response.write(JSON.stringify({error:e, message:'bugger'}));
-            response.end();
-        }
+var app = express();
 
-  
-    };
-    var userRepos = function(username){
-        console.log('Repos the user has ');
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-        var response = this.res,
-            request = this.req;
- 
-        var reap = new reaper();
-        try {
-            reap.getUserRepositories(username, function(err, results) {
-                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
-                response.write(JSON.stringify(results));
-                response.end();
-            });
-        } catch (e) {
-            response.write(JSON.stringify({error:e, message:'bugger'}));
-            response.end();
-        }
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-  
-    };
-var repoCompare = function(username, other_username){
-        console.log('Repo ');
-        var response = this.res,
-            request = this.req;
- 
-        var reap = new reaper();
-        reap.getWatchedRepositories(username, function(err, results) {
-                reap.getWatchedRepositories(other_username, function(err, second_results){
-                
-                var full_results = [];
-                full_results.push({user: username, repos: results});
-                full_results.push({user: other_username, repos: second_results});
-                response.writeHead(200,{"Access-Control-Allow-Origin": "*"});
-                response.write(JSON.stringify(full_results));
-                response.end();
-            });
-        });
- 
-  
-    };
 
-var staticContent = function (folder, file) {
-        console.log('static content');
-        var _this = this;
-        fs.readFile(path.join(__dirname, folder, file+'.'+folder), "binary", function(err, file) {
-            if(err) {
-                _this.res.writeHead(500, {"Content-Type": "text/plain"});
-                _this.res.write(err + "\n");
-                _this.res.end();
-                return;
-            }
-            
-            _this.res.writeHead(200);
-            _this.res.write(file, "binary");
-            _this.res.end();
-        });
-    };
-var jsContent = function (folder, file) {
-        console.log('static content');
-        folder = '/js/' + (folder || '');
-        console.log(folder);
-        var _this = this;
-        fs.readFile(path.join(__dirname, folder, file || ''), "binary", function(err, file) {
-            if(err) {
-                 console.log('danger');
-                _this.res.writeHead(500, {"Content-Type": "text/plain"});
-                _this.res.write(err + "\n");
-                _this.res.end();
-                return;
-            } 
-            _this.res.writeHead(200, {"Content-Type": "application/javascript"});
-            _this.res.write(file, "binary");
-            _this.res.end();
-        });
-    };
-var routes = {
-    '/hi': {
-        get: helloWorld
-    },
-    '/' : {
-        get: base
-    },
-    '/stars/:username' : {
-        get: base
-    },
-    '/userrepos/:username' : {
-        get: base
-    },
-    '/repos/:username': {
-        get: repos
-    },
-    '/user/repos/:username': {
-        get: userRepos
-    },
-    '/repos/compare/:firstuser/:seconduser' : {
-        get: repoCompare
-    },
-    '/static/:folder/:file': {
-        get: staticContent
-    },
-    '/js/:file.js': {
-        get: jsContent
-    },
-    '/js/:folder/:file.js': {
-        get: jsContent
-    }
-};
-function helloWorld() {
-    this.res.writeHead(200, { 'Content-Type': 'text/plain' });
-    this.res.end('hello world');
-  }
+app.use('/', routes);
+app.use('/api', api);
 
-var router = new director.http.Router(routes);
- 
-var server = http.createServer(function (req, res) {
-    console.log('test');
-    router.dispatch(req, res, function (err) {
-        if (err) {
-            res.writeHead(404);
-            res.end();
-        }
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
- });
-server.on('request', function() {console.log('is this thing on?');});
-console.log('preparing to start');
-server.listen(process.env.PORT || 3545);
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
