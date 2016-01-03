@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router';
 
 export default class App extends React.Component {
   static displayName = "App"
@@ -6,7 +7,7 @@ export default class App extends React.Component {
     return (
       <section>
         <header>
-          <h1>Repo Watch</h1>
+          <h1><Link to="/">Repo Watch</Link></h1>
         </header>
 
         <main className="container">
