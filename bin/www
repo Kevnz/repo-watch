@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-require("babel-register");
+
 
 /**
  * Module dependencies.
  */
-
+require('xtconf')()
 var app = require('../app');
 var debug = require('debug')('repo-watch:server');
 var http = require('http');

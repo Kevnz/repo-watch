@@ -26,6 +26,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.11",
     "morgan": "~1.9.1",
+    "parse-link-header": "^1.0.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-refetch": "^2.0.3",
@@ -34,7 +35,7 @@
     "react-search": "^2.0.5",
     "scroll-behavior": "^0.9.10",
     "serve-favicon": "~2.5.0",
-    "xtconf": "^4.0.0"
+    "xtconf": "^4.1.0"
   },
   "devDependencies": {
     "babel-plugin-react-transform": "^3.0.0",
