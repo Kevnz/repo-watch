@@ -55,7 +55,6 @@ router.get('/:user', async function (req, res, next) {
     await reaper(req.params.user)
     req.cache.set('user-' + req.params.user, stars);
     res.header('Content-Type', 'application/json');
-    fs.writeFileSync('stars.json', JSON.stringify(stars, null, 2))
     res.send(stars);
 
   }
