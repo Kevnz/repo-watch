@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from '@reach/router'
 const _ = require('lodash');
 
 const RepoItem = (props) => <div><a href={props.html_url}>{props.name}</a>: <span>{props.description || 'No description'}</span></div>;
@@ -40,9 +41,10 @@ export default class RepositoryList extends React.Component {
     const langButtons = langed.map(language => <button key={`repo-language-${language}`} onClick={()=> this.setState({searchTerm:this.state.searchTerm, searchLanguage: language })}>{language || 'No Language'}</button>)
     const repoList = filteredList.map((repo, index) => <RepoItem {...repo}  key={'repo-item' + index}/>);
     return (<section>
+      <div><Link to="/">Back</Link></div>
       <div>
         <input
-            placeholder='Search'
+            placeholder='Search Repos'
             onChange={this.handleChange} />
         <button onClick={()=> this.setState({searchTerm : '',searchLanguage: ''})}>Clear</button>
         </div>
