@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router";
+import { Route, Router, Link } from "react-router-dom";
 
 import App from "./components/app";
 import Home from "./components/home";
@@ -7,10 +7,18 @@ import RepoList from "./components/repo-list";
 import RepoDetail from "./components/repo-detail";
 
 export default (
-  <Route component={App}>
+  <Router >      <section>
+    <header>
+      <h1><Link to="/">Repo Watch</Link></h1>
+    </header>
 
-    <Route path="/" component={Home} />
-    <Route path="/:user" component={RepoList} />
-    <Route path="/:user/:repo" component={RepoDetail} />
-  </Route>
+    <main className="container">
+      <Route path="/" component={Home} />
+      <Route path="/:user" component={RepoList} />
+      <Route path="/:user/:repo" component={RepoDetail} />
+    </main>
+
+  </section>
+
+  </Router>
 );

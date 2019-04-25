@@ -1,9 +1,10 @@
-import React from 'react'
+
+import ES6Promise from "es6-promise";
+import React from "react";
 import ReactDOM from 'react-dom';
-import App from './components/app';
 
-console.log('test');
 
-const root = document.getElementById('react-root')
+import App from "./app";
 
-document.addEventListener('DOMContentLoaded', ()=> ReactDOM.render(<App />, root));
+ES6Promise.polyfill();
+ReactDOM.render(<App/>, document.getElementById("app"));

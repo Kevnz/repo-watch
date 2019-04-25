@@ -1,23 +1,35 @@
 import axios from "axios";
-import { Link } from "react-router";
-import React from "react";
 
-import { resolve } from "react-resolver";
+import React, { useEffect, useState } from "react";
 
-@resolve("details", function({ params }) {
-  const { user, repo } = params;
-  const url = `/api/${user}/${repo}`;
 
-  return axios.get(url).then(({ data }) => data);
-})
-export default class RepoDetail extends React.Component {
-  static displayName = "Stargazer"
 
-  render() {
-    const { repo } = this.props;
+
+
+const useAxios = (url) => {
+  const [data, updateData] = useState()
+
+  const url2 = `/api/${user}/${repo}`;
+
+  const fetchQuery = async (url) => {
+    const resp = await axios.get(url)
+
+    const data = resp.data
+    updateData(json)
+  }
+  useEffect(() => {
+    fetchQuery(url)
+  }, [])
+
+  return data
+}
+
+const RepoDetail = (props)=> {
 
     return (
         <section> ? </section>
     );
-  }
+
 }
+
+export default RepoDetail

@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 const _ = require('lodash');
 
-const RepoItem = (props) => <div key={props.key}><a href={props.html_url}>{props.name}</a>: <span>{props.description || 'No description'}</span></div>;
+const RepoItem = (props) => <div><a href={props.html_url}>{props.name}</a>: <span>{props.description || 'No description'}</span></div>;
 
 export default class RepositoryList extends React.Component {
   static propTypes = {
-    repos: React.PropTypes.array.isRequired,
+    repos: PropTypes.array.isRequired,
   }
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this);
     this.state = { searchTerm : '',searchLanguage: '' };
   }
   static displayName = "RepositoryList"
@@ -18,6 +20,7 @@ export default class RepositoryList extends React.Component {
     }
   }
   render() {
+
     const { repos } = this.props;
 
     const filteredList = repos.filter((item) => {
@@ -33,15 +36,15 @@ export default class RepositoryList extends React.Component {
     });
     const languages = filteredList.map(item => item.language);
     const langed = _.uniq(languages);
-    console.log('uniq languages', langed);
-    const langButtons = langed.map(language => <button key={language} onClick={()=>::this.setState({searchTerm:this.state.searchTerm, searchLanguage: language })}>{language || 'No Language'}</button>)
+
+    const langButtons = langed.map(language => <button key={`repo-language-${language}`} onClick={()=> this.setState({searchTerm:this.state.searchTerm, searchLanguage: language })}>{language || 'No Language'}</button>)
     const repoList = filteredList.map((repo, index) => <RepoItem {...repo}  key={'repo-item' + index}/>);
     return (<section>
       <div>
         <input
             placeholder='Search'
-            onChange={::this.handleChange} />
-        <button onClick={()=>::this.setState({searchTerm : '',searchLanguage: ''})}>Clear</button>
+            onChange={this.handleChange} />
+        <button onClick={()=> this.setState({searchTerm : '',searchLanguage: ''})}>Clear</button>
         </div>
       <div>
         {langButtons}
