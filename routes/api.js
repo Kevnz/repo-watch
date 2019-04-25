@@ -11,7 +11,6 @@ const getNextPageFromLink = function (metaLinks) {
   if (!metaLinks) return 0;
 
   var parsed = parse(metaLinks);
-  console.log(parsed);
   if (!parsed.next) return ;
   return parseInt(parsed.next.page, 10)
 };
@@ -33,22 +32,22 @@ router.get('/:user', async function (req, res, next) {
   const stars = []
   const reaper = async (username, page = 1) => {
 
-  const {data, status, headers } = await getStars(username, page)
-  const lastPage = getLastPageFromLink(headers.link)
-  stars.push(...data)
+    const {data, status, headers } = await getStars(username, page)
+    const lastPage = getLastPageFromLink(headers.link)
+    stars.push(...data)
 
-  const pager = getNextPageFromLink(headers.link)
+    const pager = getNextPageFromLink(headers.link)
 
-	if (pager <= lastPage) {
-    try {
-      return reaper(username, pager)
-    } catch (err) {
-      console.error(err)
-      return
+    if (pager <= lastPage) {
+      try {
+        return reaper(username, pager)
+      } catch (err) {
+        console.error(err)
+        return
+      }
     }
+    return
   }
-  return
-}
   var cached = req.cache.get('user-' + req.params.user);
   if (cached) {
     res.send(cached);
@@ -58,9 +57,7 @@ router.get('/:user', async function (req, res, next) {
     await reaper(req.params.user)
 
         req.cache.set('user-' + req.params.user, stars);
-        console.dir(stars.length);
         res.header('Content-Type', 'application/json');
-
         fs.writeFileSync('stars.json', JSON.stringify(stars, null, 2))
         res.send(stars);
 
