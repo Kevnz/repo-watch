@@ -31,7 +31,7 @@ const checkPageLink = () => {
 router.get('/:user', async function (req, res, next) {
   const stars = []
   const reaper = async (username, page = 1) => {
-
+    console.info('reaper')
     const {data, status, headers } = await getStars(username, page)
     const lastPage = getLastPageFromLink(headers.link)
     stars.push(...data)
