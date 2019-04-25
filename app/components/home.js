@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, TextBox, Button } from 'react-form-elements'
 import { navigate } from '@reach/router'
 export default function Home() {
@@ -7,7 +7,6 @@ export default function Home() {
       <Form
         name="user"
         onSubmit={(values) => {
-          console.info('values', values.user)
           navigate(`\\${values.user}`)
         }}
         className="col s12"
