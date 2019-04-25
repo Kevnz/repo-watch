@@ -1884,7 +1884,12 @@
     height: 100%; }
 
 
-
+body {
+  border-top: 0.6rem solid #1f8dd6;
+}
+#app {
+  margin: 2.5rem;
+}
 .rfe-form__row {
   display: inline;
 }
