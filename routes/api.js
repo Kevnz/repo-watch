@@ -48,18 +48,15 @@ router.get('/:user', async function (req, res, next) {
     }
     return
   }
-  var cached = req.cache.get('user-' + req.params.user);
+  var cached = await req.cache.get('user-' + req.params.user);
   if (cached) {
     res.send(cached);
   } else {
-    // const stars = []
-
     await reaper(req.params.user)
-
-        req.cache.set('user-' + req.params.user, stars);
-        res.header('Content-Type', 'application/json');
-        fs.writeFileSync('stars.json', JSON.stringify(stars, null, 2))
-        res.send(stars);
+    req.cache.set('user-' + req.params.user, stars);
+    res.header('Content-Type', 'application/json');
+    fs.writeFileSync('stars.json', JSON.stringify(stars, null, 2))
+    res.send(stars);
 
   }
 });
