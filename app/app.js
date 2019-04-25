@@ -12,7 +12,7 @@ export default class App extends Component {
     return (
       <section>
         <header>
-          <h1><Link to="/">Repo Watch</Link></h1>
+          <h1><Link to="/">GitHub Observatory</Link></h1>
         </header>
         <main className="container">
           <Router>

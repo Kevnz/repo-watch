@@ -12,9 +12,9 @@ export default function Home() {
         className="col s12"
       >
         <TextBox name="user" label="GitHub User" initialValue="" className="row" />
-        <div className="row">
-          <Button>See Stars</Button>
-        </div>
+
+        <Button>See Stars</Button>
+
       </Form>
     </section>
   );
