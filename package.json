@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
+    "bundle2": "NODE_ENV=production browserify  app/client.js -t envify -t babelify -t uglifyify -p [minifyify --no-map] > public/js/bundle.js",
     "bundle": "browserify --debug app/client.js -t babelify --outfile public/js/bundle.js",
     "watch": "watchify -t babelify app/client.js --outfile public/js/bundle.js",
     "plato": "es6-plato -r -d report routes"
@@ -44,8 +45,11 @@
     "@kev_nz/eslint-config": "^3.2.1",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "envify": "^4.1.0",
     "eslint": "^5.16.0",
+    "minifyify": "^7.3.5",
     "nodemon": "^1.18.11",
+    "uglifyify": "^5.0.1",
     "watchify": "^3.11.1"
   }
 }
