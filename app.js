@@ -4,6 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var Rollbar = require("rollbar");
+var rollbar = new Rollbar({
+  accessToken: process.env.ROLLBAR,
+  captureUncaught: true,
+  captureUnhandledRejections: true
+});
 var cache = require('./middleware/cache');
 var routes = require('./routes/index');
 var api = require('./routes/api');
@@ -35,6 +41,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    rollbar.error(err, req);
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -46,6 +53,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  rollbar.error(err, req);
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
