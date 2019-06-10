@@ -7,21 +7,30 @@ const parse = (str) => {
 }
 module.exports = function (req, res, next) {
   req.cache = {};
-  req.cache.add = function (user, page, stars) {
+  req.cache.add = async function (user, page, stars) {
+
     return redis.hset(
       `stars:${user}`,
       page,
       JSON.stringify(stars)
     )
   }
+
   req.cache.set = function (key, value) {
     redis.set(key, JSON.stringify(value));
   };
   req.cache.getAll = async function (key) {
+
+
     const entries = await redis.hgetall(`stars:${key}`)
 
-    if (entries.length > 0) {
-      return parse(entries)
+    if (Object.keys(entries).length === 0) return null
+    if (entries) {
+      return  Object.keys(entries).map(key=>JSON.parse(entries[key])).reduce((vals, pg)=> {
+        return vals.concat(
+          ...pg
+        )
+      }, [])
     }
 
     return null

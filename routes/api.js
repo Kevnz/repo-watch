@@ -33,8 +33,9 @@ router.get('/:user', async function (req, res, next) {
   const reaper = async (username, page = 1) => {
     console.info('reaper')
     const {data, status, headers } = await getStars(username, page)
+
     const lastPage = getLastPageFromLink(headers.link)
-    req.cache.add(username, page, data)
+    await req.cache.add(username, page, data)
     stars.push(...data)
 
     const pager = getNextPageFromLink(headers.link)
@@ -49,7 +50,9 @@ router.get('/:user', async function (req, res, next) {
     }
     return
   }
-  var cached = await req.cache.getAll('user-' + req.params.user);
+  console.log('cache get all')
+  var cached = await req.cache.getAll(req.params.user);
+
   if (cached) {
     res.send(cached);
   } else {
