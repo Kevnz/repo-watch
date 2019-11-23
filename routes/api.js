@@ -4,6 +4,7 @@ const fs = require('fs');
 const url = require('url')
 const Octokit = require('@octokit/rest')
 const parse = require('parse-link-header');
+const { delay, doWhile, mapper } = require('@kev_nz/async-tools')
 const github = new Octokit({
   auth: process.env.GITHUB_API
 });
@@ -29,35 +30,33 @@ const checkPageLink = () => {
 
 
 router.get('/:user', async function (req, res, next) {
-  const stars = []
+
   const reaper = async (username, page = 1) => {
-    console.info('reaper')
-    const {data, status, headers } = await getStars(username, page)
+
+    const {  headers } = await getStars(username, page)
 
     const lastPage = getLastPageFromLink(headers.link)
-    await req.cache.add(username, page, data)
-    stars.push(...data)
 
-    const pager = getNextPageFromLink(headers.link)
 
-    if (pager <= lastPage) {
-      try {
-        return reaper(username, pager)
-      } catch (err) {
-        console.error(err)
-        return
-      }
-    }
-    return
+    const pages = new Array(lastPage).fill(0).map((v, i) => i + 1)
+    console.log('pages', pages)
+    const stars = await mapper(pages, async (p) => {
+      console.log('get page', p)
+      const { data } = await getStars(username, p)
+      console.log('got page')
+      return data
+    })
+
+    return [].concat(...stars)
   }
-  console.log('cache get all')
-  var cached = await req.cache.getAll(req.params.user);
 
+  var cached = await req.cache.getAll(req.params.user);
+   // console.log('other', cached)
   if (cached) {
     res.send(cached);
   } else {
-    await reaper(req.params.user)
-    // req.cache.set('user-' + req.params.user, stars);
+    const stars = await reaper(req.params.user)
+    req.cache.set('user-' + req.params.user, stars);
     res.header('Content-Type', 'application/json');
     res.send(stars);
 
